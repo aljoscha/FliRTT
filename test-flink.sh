@@ -24,45 +24,34 @@ check_result() {
 }
 
 
-test_builtin_data $flink_dist/examples/ConnectedComponents.jar
-test_builtin_data $flink_dist/examples/EnumTrianglesBasic.jar
-test_builtin_data $flink_dist/examples/EnumTrianglesOpt.jar
-test_builtin_data $flink_dist/examples/KMeans.jar
-test_builtin_data $flink_dist/examples/PageRankBasic.jar
-test_builtin_data $flink_dist/examples/TransitiveClosure.jar
-test_builtin_data $flink_dist/examples/WebLogAnalysis.jar
-test_builtin_data $flink_dist/examples/WordCount.jar
-test_builtin_data $flink_dist/examples/WordCountPOJO.jar
+test_builtin_data $flink_dist/examples/batch/ConnectedComponents.jar
+test_builtin_data $flink_dist/examples/batch/EnumTriangles.jar
+test_builtin_data $flink_dist/examples/batch/KMeans.jar
+test_builtin_data $flink_dist/examples/batch/PageRank.jar
+test_builtin_data $flink_dist/examples/batch/TransitiveClosure.jar
+test_builtin_data $flink_dist/examples/batch/WebLogAnalysis.jar
+test_builtin_data $flink_dist/examples/batch/WordCount.jar
 
 rm -r $test_root/out/cc_out
-$flink_dist/bin/flink run $flink_dist/examples/ConnectedComponents.jar $test_root/test-data/cc_vert $test_root/test-data/cc_edge $test_root/out/cc_out 10
+$flink_dist/bin/flink run $flink_dist/examples/batch/ConnectedComponents.jar --vertices $test_root/test-data/cc_vert --edges $test_root/test-data/cc_edge --output $test_root/out/cc_out --iterations 10
 check_result $test_root/out/cc_out
 
 rm -r $test_root/out/tr_basic_out
-$flink_dist/bin/flink run $flink_dist/examples/EnumTrianglesBasic.jar $test_root/test-data/tr_edges $test_root/out/tr_basic_out
+$flink_dist/bin/flink run $flink_dist/examples/batch/EnumTriangles.jar --edges $test_root/test-data/tr_edges --output $test_root/out/tr_basic_out
 check_result $test_root/out/tr_basic_out
 
-rm -r $test_root/out/tr_opt_out
-$flink_dist/bin/flink run $flink_dist/examples/EnumTrianglesOpt.jar $test_root/test-data/tr_edges $test_root/out/tr_opt_out
-check_result $test_root/out/tr_opt_out
-
 rm -r $test_root/out/pr_out
-$flink_dist/bin/flink run $flink_dist/examples/PageRankBasic.jar $test_root/test-data/pages $test_root/test-data/links $test_root/out/pr_out 5 10
+$flink_dist/bin/flink run $flink_dist/examples/batch/PageRank.jar --pages $test_root/test-data/pages --links $test_root/test-data/links --output $test_root/out/pr_out --numPages 5 --iterations 10
 check_result $test_root/out/pr_out
 
 rm -r $test_root/out/tc_out
-$flink_dist/bin/flink run $flink_dist/examples/TransitiveClosure.jar $test_root/test-data/tr_edges $test_root/out/tc_out 10
+$flink_dist/bin/flink run $flink_dist/examples/batch/TransitiveClosure.jar --edges $test_root/test-data/tr_edges --output $test_root/out/tc_out --iterations 10
 check_result $test_root/out/tc_out
 
 rm -r $test_root/out/web_out
-$flink_dist/bin/flink run $flink_dist/examples/WebLogAnalysis.jar $test_root/test-data/web_docs $test_root/test-data/web_ranks $test_root/test-data/web_visits $test_root/out/web_out
+$flink_dist/bin/flink run $flink_dist/examples/batch/WebLogAnalysis.jar --documents $test_root/test-data/web_docs --ranks $test_root/test-data/web_ranks --visits $test_root/test-data/web_visits --output $test_root/out/web_out
 check_result $test_root/out/web_out
 
 rm -r $test_root/out/wc_out
-$flink_dist/bin/flink run $flink_dist/examples/WordCount.jar $test_root/test-data/words $test_root/out/wc_out
+$flink_dist/bin/flink run $flink_dist/examples/batch/WordCount.jar --input $test_root/test-data/words --output $test_root/out/wc_out
 check_result $test_root/out/wc_out
-
-rm -r $test_root/out/wc_pojo_out
-$flink_dist/bin/flink run $flink_dist/examples/WordCountPOJO.jar $test_root/test-data/words $test_root/out/wc_pojo_out
-check_result $test_root/out/wc_pojo_out
-
